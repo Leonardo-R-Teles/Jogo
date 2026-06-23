@@ -19,7 +19,16 @@ while running:
             running = False
 
     # Clear the screen
-    screen.fill((0, 0, 0))
+    screen.fill("black")
+
+    # Draw logic
+
+    # Floor
+    pygame.draw.rect(screen, "green", (0, 550, 800, 50))  # 1
+    pygame.draw.rect(screen, "green", (0, 500, 200, 50))  # 2
+    pygame.draw.rect(screen, "green", (750, 500, 100, 50))  # 2
+    pygame.draw.rect(screen, "green", (0, 500, 100, 50))  # 3
+    pygame.draw.rect(screen, "green", (0, 450, 100, 50))  # 3
 
     # Update the display
     pygame.display.flip()
