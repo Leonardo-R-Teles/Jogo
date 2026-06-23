@@ -11,10 +11,12 @@ pygame.display.set_caption("WASD Movimento")
 
 # configuração personagem
 player_size = 50
+player_vy = 0
+GRAVITY = 500  # aceleração da gravidade
 player_color = (255, 0, 0)  # vermelho
 player_x = screen_width // 2 - player_size // 2
 player_y = screen_height // 2 - player_size // 2
-player_speed = 5        # velocidade do personagem
+player_speed = 150        # velocidade do personagem
 
 clock = pygame.time.Clock()
 
@@ -33,13 +35,17 @@ while running:
 
     keys = pygame.key.get_pressed()  # pega as teclas pressionadas
     if keys[pygame.K_w] or keys[pygame.K_UP]:  # move para cima
-        player_y -= player_speed * dt
+        player_y -= (player_speed + GRAVITY) * dt
     if keys[pygame.K_s] or keys[pygame.K_DOWN]:  # move para baixo
         player_y += player_speed * dt
     if keys[pygame.K_a] or keys[pygame.K_LEFT]:  # move para a esquerda
         player_x -= player_speed * dt
     if keys[pygame.K_d] or keys[pygame.K_RIGHT]:  # move para a direita
         player_x += player_speed * dt
+
+    # aplicação de gravidade
+    player_vy += GRAVITY * dt       # aumento de gravidade vertical
+    player_y += player_vy * dt
 
     # limita o movimento do personagem dentro da tela
     player_x = max(0, min(player_x, screen_width - player_size))
@@ -48,21 +54,22 @@ while running:
     # tela preta
     screen.fill((0, 0, 0))
 
+    # chão
+    pygame.draw.rect(screen, "green", (0, 550, 800, 50))  # 1
+    pygame.draw.rect(screen, "green", (0, 500, 200, 50))  # 2
+    pygame.draw.rect(screen, "green", (750, 500, 100, 50))  # 2
+    pygame.draw.rect(screen, "green", (0, 500, 100, 50))  # 3
+    pygame.draw.rect(screen, "green", (0, 450, 100, 50))  # 3
+
     # desenha o personagem
     pygame.draw.rect(screen, player_color, (player_x,
-                     player_y, player_size, player_size))
+                                            player_y, player_size, player_size))
 
     # atualiza a tela
     pygame.display.flip()
 
     dt = clock.tick(60) / 1000  # tempo em segundos desde o último frame
+    # chão
 
 # quando o loop principal termina, finaliza o Pygame
 pygame.quit()
-
-# chão
-pygame.draw.rect(screen, "green", (0, 550, 800, 50))  # 1
-pygame.draw.rect(screen, "green", (0, 500, 200, 50))  # 2
-pygame.draw.rect(screen, "green", (750, 500, 100, 50))  # 2
-pygame.draw.rect(screen, "green", (0, 500, 100, 50))  # 3
-pygame.draw.rect(screen, "green", (0, 450, 100, 50))  # 3
