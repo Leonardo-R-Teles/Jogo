@@ -1,19 +1,19 @@
 import pygame
 
-# Initialize Pygame
+# Game setup
 pygame.init()
-
-# Set up the display
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
-
-# Set up the clock for controlling the frame rate
 clock = pygame.time.Clock()
-
-# Main game loop
 running = True
+dt = 0
+
+# Player setup
+player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+
 while running:
+    # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -30,11 +30,25 @@ while running:
     pygame.draw.rect(screen, "green", (0, 500, 100, 50))  # 3
     pygame.draw.rect(screen, "green", (0, 450, 100, 50))  # 3
 
+    # Player
+    pygame.draw.rect(screen, "blue", (player_pos.x, player_pos.y, 50, 50))
+
+    # Keyboard input
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        player_pos.x -= 300 * dt
+    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        player_pos.x += 300 * dt
+    if keys[pygame.K_UP] or keys[pygame.K_w]:
+        player_pos.y -= 300 * dt
+    if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+        player_pos.y += 300 * dt
+
     # Update the display
     pygame.display.flip()
 
     # Cap the frame rate
-    clock.tick(60)
+    dt = clock.tick(60) / 1000
 
 # Quit Pygame
 pygame.quit()
